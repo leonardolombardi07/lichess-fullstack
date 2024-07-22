@@ -5,6 +5,7 @@ import {
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Skeleton from "@mui/material/Skeleton";
 
 export default function PlayerCard({
   id,
@@ -68,4 +69,8 @@ function PlayerOnlineStatusCircle({ online }: { online?: boolean }) {
       }}
     />
   );
+}
+
+export function PlayerCardSkeleton() {
+  return <Skeleton height={50} />;
 }

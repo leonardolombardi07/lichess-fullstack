@@ -15,6 +15,8 @@ import ProgressPositiveIcon from "@mui/icons-material/CallMade";
 import ProgressNegativeIcon from "@mui/icons-material/CallReceived";
 import Link from "next/link";
 import GoBackIconButton from "@/components/navigation/GoBackIconButton";
+import TableSkeleton from "@/components/feedback/TableSkeleton";
+import { Suspense } from "react";
 
 interface PageProps {
   params: {
@@ -33,8 +35,12 @@ export default async function Page({ params }: PageProps) {
     <Container
       component={Paper}
       sx={{
-        p: {
+        px: {
           xs: 0,
+          md: 4,
+        },
+        py: {
+          xs: 1,
           md: 4,
         },
       }}
@@ -57,62 +63,67 @@ export default async function Page({ params }: PageProps) {
           {getTitleFromParams(params)}
         </Typography>
       </Box>
-      <Table>
-        <TableHead>
-          <TableRow
-            sx={{
-              fontWeight: "bold",
-            }}
-          >
-            <TableCell>Rank</TableCell>
-            <TableCell>Username</TableCell>
-            <TableCell>Rating</TableCell>
-            <TableCell>Progress</TableCell>
-          </TableRow>
-        </TableHead>
 
-        <TableBody>
-          {leaderboard.users.map((player, index) => {
-            const rating = player.perfs[params.perfType].rating;
-            const progress = player.perfs[params.perfType].progress;
-            return (
-              <TableRow key={player.username}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>
-                  <Box
-                    component={Link}
-                    href={`/players/${player.id}`}
+      <Suspense
+        fallback={
+          <TableSkeleton
+            numOfColumns={4}
+            numOfRows={Number(params.numOfPlayers)}
+          />
+        }
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Rank</TableCell>
+              <TableCell>Username</TableCell>
+              <TableCell>Rating</TableCell>
+              <TableCell>Progress</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {leaderboard.users.map((player, index) => {
+              const rating = player.perfs[params.perfType].rating;
+              const progress = player.perfs[params.perfType].progress;
+              return (
+                <TableRow key={player.username}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>
+                    <Box
+                      component={Link}
+                      href={`/players/${player.id}`}
+                      sx={{
+                        textDecoration: "none",
+                        color: "inherit",
+
+                        "&:hover": {
+                          textDecoration: "underline",
+                        },
+                      }}
+                    >
+                      {player.username}
+                    </Box>
+                  </TableCell>
+
+                  <TableCell>{rating}</TableCell>
+
+                  <TableCell
                     sx={{
-                      textDecoration: "none",
-                      color: "inherit",
-
-                      // Add hover effect
-                      "&:hover": {
-                        textDecoration: "underline",
-                      },
+                      display: "flex",
+                      alignItems: "center",
+                      color: progress > 0 ? "success.main" : "error.main",
                     }}
                   >
-                    {player.username}
-                  </Box>
-                </TableCell>
-
-                <TableCell>{rating}</TableCell>
-
-                <TableCell
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    color: progress > 0 ? "success.main" : "error.main",
-                  }}
-                >
-                  <ProgressIcon progress={progress} />
-                  {progress}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+                    <ProgressIcon progress={progress} />
+                    {progress}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </Suspense>
     </Container>
   );
 }

@@ -19,9 +19,6 @@ export default function ThemeModeSwitch() {
 
   const checked = theme.mode === "dark";
 
-  const humanReadableThemeMode =
-    theme.mode === "dark" ? "Dark Mode" : "Light Mode";
-
   return (
     <Box>
       <Stack spacing={2} direction="row" sx={{ alignItems: "center" }}>

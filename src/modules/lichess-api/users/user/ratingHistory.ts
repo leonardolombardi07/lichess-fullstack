@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import ApiInstance from "../../instance";
 import { PerfTypeName } from "../types";
 
@@ -20,10 +21,15 @@ async function getUserRatingHistoryEntries({
 }: {
   username: string;
 }): Promise<UserRatingHistoryEntry[]> {
-  const response = await ApiInstance.get<UserRatingHistoryEntry[]>(
-    `/user/${username}/rating-history`
-  );
-  return response.data;
+  try {
+    const response = await ApiInstance.get<UserRatingHistoryEntry[]>(
+      `/user/${username}/rating-history`
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export { getUserRatingHistoryEntries };

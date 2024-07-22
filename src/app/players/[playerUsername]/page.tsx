@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
+// import Header from "./_page/Header";
+import Chart from "./_page/Chart";
+import Activity from "./_page/Activity";
 
 interface PageProps {
   params: {
@@ -9,22 +10,12 @@ interface PageProps {
 }
 
 export default async function Page({ params }: PageProps) {
+  const username = params.playerUsername;
   return (
-    <Box
-      sx={{
-        p: 2,
-      }}
-    >
-      <WorkInProgress />
+    <Box>
+      {/* <Header username={username} /> */}
+      <Chart username={username} />
+      <Activity username={username} />
     </Box>
-  );
-}
-
-function WorkInProgress() {
-  return (
-    <Alert severity="info">
-      <AlertTitle>Work in progress</AlertTitle>
-      This page is still under construction. Please check back later.
-    </Alert>
   );
 }

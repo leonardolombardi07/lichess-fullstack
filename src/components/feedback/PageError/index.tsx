@@ -29,17 +29,20 @@ export default function PageError({
       >
         <AlertTitle>Error</AlertTitle>
         {formattedError}
-      </Alert>
 
-      {reset && (
-        <Box
-          sx={{
-            maxWidth: 400,
-          }}
-        >
-          <Button onClick={reset}>Reset</Button>
-        </Box>
-      )}
+        {reset && (
+          <Box
+            sx={{
+              maxWidth: 400,
+              my: 2,
+            }}
+          >
+            <Button variant="outlined" onClick={reset}>
+              Reset
+            </Button>
+          </Box>
+        )}
+      </Alert>
     </Box>
   );
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Skeleton from "@mui/material/Skeleton";
+import PlayerStatus from "./PlayerStatus";
 
 export default function PlayerCard({
   id,
@@ -35,7 +36,7 @@ export default function PlayerCard({
       }}
       href={`/players/${id}`}
     >
-      <PlayerOnlineStatusCircle online={online} />
+      <PlayerStatus online={online} />
       <Typography
         variant="body1"
         sx={{
@@ -48,26 +49,6 @@ export default function PlayerCard({
       </Typography>
       <Typography variant="body2">{rating}</Typography>
     </Box>
-  );
-}
-
-function PlayerOnlineStatusCircle({ online }: { online?: boolean }) {
-  return (
-    <Box
-      sx={{
-        width: 10,
-        height: 10,
-        borderRadius: "50%",
-        bgcolor:
-          online === undefined
-            ? "transparent"
-            : online
-            ? "success.main"
-            : "error.main",
-        border: online === undefined ? "1px solid" : "none",
-        borderColor: "grey.500",
-      }}
-    />
   );
 }
 

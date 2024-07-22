@@ -1,4 +1,7 @@
-import LichessApi, { ValidLeaderboardPerfType } from "@/modules/lichess-api";
+import LichessApi, {
+  ValidLeaderboardPerfType,
+  humanReadablePerfType,
+} from "@/modules/lichess-api";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -19,7 +22,7 @@ export default async function Leaderboards() {
   return (
     <Grid container spacing={0}>
       {allTop10AsArray.map((leaderboard) => (
-        <Grid item xs={4} key={leaderboard.perfType}>
+        <Grid item xs={12} sm={6} md={4} key={leaderboard.perfType}>
           <Box
             sx={{
               borderRight: "1px solid",
@@ -65,36 +68,4 @@ export default async function Leaderboards() {
       ))}
     </Grid>
   );
-}
-
-function humanReadablePerfType(perfType: ValidLeaderboardPerfType) {
-  switch (perfType) {
-    case "blitz":
-      return "Blitz";
-    case "rapid":
-      return "Rapid";
-    case "bullet":
-      return "Bullet";
-    case "classical":
-      return "Classical";
-    case "chess960":
-      return "Chess960";
-    case "crazyhouse":
-      return "Crazyhouse";
-    case "antichess":
-      return "Antichess";
-    case "atomic":
-      return "Atomic";
-    case "horde":
-      return "Horde";
-    case "kingOfTheHill":
-      return "King of the Hill";
-    case "racingKings":
-      return "Racing Kings";
-    case "threeCheck":
-      return "Three Check";
-
-    default:
-      return "Unknown";
-  }
 }

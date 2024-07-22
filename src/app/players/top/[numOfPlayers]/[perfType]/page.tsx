@@ -1,4 +1,7 @@
-import LichessApi, { ValidLeaderboardPerfType } from "@/modules/lichess-api";
+import LichessApi, {
+  humanReadablePerfType,
+  ValidLeaderboardPerfType,
+} from "@/modules/lichess-api";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -30,7 +33,10 @@ export default async function Page({ params }: PageProps) {
     <Container
       component={Paper}
       sx={{
-        p: 4,
+        p: {
+          xs: 0,
+          md: 4,
+        },
       }}
     >
       <Box
@@ -48,7 +54,7 @@ export default async function Page({ params }: PageProps) {
             ml: 2,
           }}
         >
-          Top {params.numOfPlayers} players
+          {getTitleFromParams(params)}
         </Typography>
       </Box>
       <Table>
@@ -109,6 +115,17 @@ export default async function Page({ params }: PageProps) {
       </Table>
     </Container>
   );
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  return {
+    title: getTitleFromParams(params),
+  };
+}
+
+function getTitleFromParams(params: PageProps["params"]) {
+  const { numOfPlayers, perfType } = params;
+  return `${humanReadablePerfType(perfType)} top  ${numOfPlayers}`;
 }
 
 function ProgressIcon({ progress }: { progress: number }) {

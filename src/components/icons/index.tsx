@@ -16,40 +16,52 @@ import CorrespondenceIcon from "@mui/icons-material/MarkEmailRead";
 import UltraBulletIcon from "@mui/icons-material/SpeedSharp";
 import { PerfType } from "@/modules/lichess-api";
 import GoBackIcon from "@mui/icons-material/ArrowBack";
+import { SvgIconProps } from "@mui/material/SvgIcon";
 
-function PerfTypeIcon({ perfType }: { perfType: PerfType }) {
+interface PerfTypeIconProps extends SvgIconProps {
+  perfType: PerfType;
+}
+
+function PerfTypeIcon({ perfType, ...rest }: PerfTypeIconProps) {
   switch (perfType) {
     case "bullet":
-      return <BulletIcon />;
+      return <BulletIcon {...rest} />;
     case "rapid":
-      return <RapidIcon />;
+      return <RapidIcon {...rest} />;
     case "blitz":
-      return <BlitzIcon />;
+      return <BlitzIcon {...rest} />;
     case "classical":
-      return <ClassicalIcon />;
+      return <ClassicalIcon {...rest} />;
     case "chess960":
-      return <Chess960Icon />;
+      return <Chess960Icon {...rest} />;
     case "crazyhouse":
-      return <CrazyhouseIcon />;
+      return <CrazyhouseIcon {...rest} />;
     case "antichess":
-      return <AntichessIcon />;
+      return <AntichessIcon {...rest} />;
     case "atomic":
-      return <AtomicIcon />;
+      return <AtomicIcon {...rest} />;
     case "horde":
-      return <HordeIcon />;
+      return <HordeIcon {...rest} />;
     case "kingOfTheHill":
-      return <KingOfTheHillIcon />;
+      return <KingOfTheHillIcon {...rest} />;
     case "racingKings":
-      return <RacingKingsIcon />;
+      return <RacingKingsIcon {...rest} />;
     case "threeCheck":
-      return <ThreeCheckIcon />;
+      return <ThreeCheckIcon {...rest} />;
     case "ultraBullet":
-      return <UltraBulletIcon />;
+      return <UltraBulletIcon {...rest} />;
     case "correspondence":
-      return <CorrespondenceIcon />;
+      return <CorrespondenceIcon {...rest} />;
 
-    default:
+    default: {
+      const exhaustiveCheck: never = perfType;
+
+      if (process.env.NODE_ENV === "development") {
+        console.error(`Unhandled perfType: ${exhaustiveCheck}`);
+      }
+
       return null;
+    }
   }
 }
 

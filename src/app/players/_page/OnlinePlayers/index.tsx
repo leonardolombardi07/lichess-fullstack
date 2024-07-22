@@ -27,7 +27,10 @@ export default async function OnlinePlayers() {
         <Box
           key={player.id}
           sx={{
-            maxWidth: 300,
+            maxWidth: {
+              xs: "100%",
+              lg: 300,
+            },
           }}
         >
           <PlayerCard {...player} />

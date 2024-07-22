@@ -1,9 +1,10 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import OnlinePlayers from "./_page/OnlinePlayers";
-import Leaderboards from "./_page/Leaderboards";
+import OnlinePlayers, { OnlinePlayersSkeleton } from "./_page/OnlinePlayers";
+import Leaderboards, { LeaderboardsSkeleton } from "./_page/Leaderboards";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
@@ -41,7 +42,9 @@ export default function Page() {
         >
           <Box>
             <Typography variant="h6">Leaderboard Online Players</Typography>
-            <OnlinePlayers />
+            <Suspense fallback={<OnlinePlayersSkeleton />}>
+              <OnlinePlayers />
+            </Suspense>
           </Box>
         </Grid>
 
@@ -54,7 +57,9 @@ export default function Page() {
             sm: 2,
           }}
         >
-          <Leaderboards />
+          <Suspense fallback={<LeaderboardsSkeleton />}>
+            <Leaderboards />
+          </Suspense>
         </Grid>
       </Grid>
     </Box>

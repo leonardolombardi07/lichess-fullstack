@@ -1,4 +1,4 @@
-import LichessApi, {
+import {
   humanReadablePerfType,
   ValidLeaderboardPerfType,
 } from "@/modules/lichess-api";
@@ -6,17 +6,9 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import ProgressPositiveIcon from "@mui/icons-material/CallMade";
-import ProgressNegativeIcon from "@mui/icons-material/CallReceived";
-import Link from "next/link";
 import GoBackIconButton from "@/components/navigation/GoBackIconButton";
-import TableSkeleton from "@/components/feedback/TableSkeleton";
 import { Suspense } from "react";
+import UsersTable, { UsersTableSkeleton } from "./page/UsersTable";
 
 interface PageProps {
   params: {
@@ -25,12 +17,7 @@ interface PageProps {
   };
 }
 
-export default async function Page({ params }: PageProps) {
-  const leaderboard = await LichessApi.getSingleLeaderboard({
-    numPlayers: Number(params.numOfPlayers),
-    perfType: params.perfType,
-  });
-
+export default function Page({ params }: PageProps) {
   return (
     <Container
       component={Paper}
@@ -64,65 +51,8 @@ export default async function Page({ params }: PageProps) {
         </Typography>
       </Box>
 
-      <Suspense
-        fallback={
-          <TableSkeleton
-            numOfColumns={4}
-            numOfRows={Number(params.numOfPlayers)}
-          />
-        }
-      >
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Rank</TableCell>
-              <TableCell>Username</TableCell>
-              <TableCell>Rating</TableCell>
-              <TableCell>Progress</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {leaderboard.users.map((player, index) => {
-              const rating = player.perfs[params.perfType].rating;
-              const progress = player.perfs[params.perfType].progress;
-              return (
-                <TableRow key={player.username}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    <Box
-                      component={Link}
-                      href={`/players/${player.id}`}
-                      sx={{
-                        textDecoration: "none",
-                        color: "inherit",
-
-                        "&:hover": {
-                          textDecoration: "underline",
-                        },
-                      }}
-                    >
-                      {player.username}
-                    </Box>
-                  </TableCell>
-
-                  <TableCell>{rating}</TableCell>
-
-                  <TableCell
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      color: progress > 0 ? "success.main" : "error.main",
-                    }}
-                  >
-                    <ProgressIcon progress={progress} />
-                    {progress}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+      <Suspense fallback={<UsersTableSkeleton {...params} />}>
+        <UsersTable {...params} />
       </Suspense>
     </Container>
   );
@@ -137,12 +67,4 @@ export async function generateMetadata({ params }: PageProps) {
 function getTitleFromParams(params: PageProps["params"]) {
   const { numOfPlayers, perfType } = params;
   return `${humanReadablePerfType(perfType)} top  ${numOfPlayers}`;
-}
-
-function ProgressIcon({ progress }: { progress: number }) {
-  if (progress > 0) {
-    return <ProgressPositiveIcon color="success" />;
-  } else {
-    return <ProgressNegativeIcon color="error" />;
-  }
 }

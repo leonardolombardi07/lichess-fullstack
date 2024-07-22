@@ -4,7 +4,6 @@ import PlayerCard, {
 import LichessApi, { ValidLeaderboardPerfType } from "@/modules/lichess-api";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Suspense } from "react";
 
 export default async function OnlinePlayers() {
   const allTop10 = await LichessApi.getTop10PlayersFromAllLeaderboards();
@@ -22,23 +21,21 @@ export default async function OnlinePlayers() {
 
   return (
     <Box>
-      <Suspense fallback={<ListOfSkeletonItems />}>
-        {onlinePlayers.length === 0 && <Empty />}
+      {onlinePlayers.length === 0 && <Empty />}
 
-        {onlinePlayers.map((player) => (
-          <Box
-            key={player.id}
-            sx={{
-              maxWidth: {
-                xs: "100%",
-                lg: 300,
-              },
-            }}
-          >
-            <PlayerCard {...player} />
-          </Box>
-        ))}
-      </Suspense>
+      {onlinePlayers.map((player) => (
+        <Box
+          key={player.id}
+          sx={{
+            maxWidth: {
+              xs: "100%",
+              lg: 300,
+            },
+          }}
+        >
+          <PlayerCard {...player} />
+        </Box>
+      ))}
     </Box>
   );
 }
@@ -51,8 +48,12 @@ function Empty() {
   );
 }
 
-function ListOfSkeletonItems() {
-  return Array.from({ length: 10 }).map((_, index) => (
-    <PlayerCardSkeleton key={index} />
-  ));
+export function OnlinePlayersSkeleton() {
+  return (
+    <Box>
+      {Array.from({ length: 10 }).map((_, index) => (
+        <PlayerCardSkeleton key={index} />
+      ))}
+    </Box>
+  );
 }

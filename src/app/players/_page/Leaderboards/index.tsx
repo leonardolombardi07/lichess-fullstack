@@ -10,7 +10,6 @@ import { PerfTypeIcon } from "@/components/icons";
 import PlayerCard, {
   PlayerCardSkeleton,
 } from "@/components/modules/players/PlayerCard";
-import { Suspense } from "react";
 
 export default async function Leaderboards() {
   const allTop10 = await LichessApi.getTop10PlayersFromAllLeaderboards();
@@ -23,59 +22,57 @@ export default async function Leaderboards() {
   );
 
   return (
-    <Suspense fallback={<ListOfSkeletonItems />}>
-      <Grid container spacing={0}>
-        {allTop10AsArray.map((leaderboard) => (
-          <Grid item xs={12} sm={6} md={4} key={leaderboard.perfType}>
+    <Grid container spacing={0}>
+      {allTop10AsArray.map((leaderboard) => (
+        <Grid item xs={12} sm={6} md={4} key={leaderboard.perfType}>
+          <Box
+            sx={{
+              borderRight: "1px solid",
+              borderLeft: "1px solid",
+              borderBottom: "1px solid",
+              borderColor: "divider",
+            }}
+          >
             <Box
+              component={Link}
+              href={`/players/top/200/${leaderboard.perfType}`}
               sx={{
-                borderRight: "1px solid",
-                borderLeft: "1px solid",
-                borderBottom: "1px solid",
-                borderColor: "divider",
+                bgcolor: "primary.main",
+                color: "primary.contrastText",
+                display: "flex",
+                alignItems: "center",
+                p: 1,
+
+                // Disable default anchor styles
+                textDecoration: "none",
+
+                "&:hover": {
+                  textDecoration: "underline",
+                },
               }}
             >
-              <Box
-                component={Link}
-                href={`/players/top/200/${leaderboard.perfType}`}
+              <PerfTypeIcon perfType={leaderboard.perfType} />
+              <Typography
+                variant="h6"
                 sx={{
-                  bgcolor: "primary.main",
-                  color: "primary.contrastText",
-                  display: "flex",
-                  alignItems: "center",
-                  p: 1,
-
-                  // Disable default anchor styles
-                  textDecoration: "none",
-
-                  "&:hover": {
-                    textDecoration: "underline",
-                  },
+                  ml: 1,
                 }}
               >
-                <PerfTypeIcon perfType={leaderboard.perfType} />
-                <Typography
-                  variant="h6"
-                  sx={{
-                    ml: 1,
-                  }}
-                >
-                  {humanReadablePerfType(leaderboard.perfType)}
-                </Typography>
-              </Box>
-
-              {leaderboard.players.map((player) => (
-                <PlayerCard key={player.username} {...player} />
-              ))}
+                {humanReadablePerfType(leaderboard.perfType)}
+              </Typography>
             </Box>
-          </Grid>
-        ))}
-      </Grid>
-    </Suspense>
+
+            {leaderboard.players.map((player) => (
+              <PlayerCard key={player.username} {...player} />
+            ))}
+          </Box>
+        </Grid>
+      ))}
+    </Grid>
   );
 }
 
-function ListOfSkeletonItems() {
+export function LeaderboardsSkeleton() {
   return (
     <Grid container spacing={0}>
       {Array.from({ length: 15 }).map((_, index) => (

@@ -5,5 +5,5 @@ export default async function Activity({ username }: { username: string }) {
     username,
   });
 
-  return 4;
+  return null;
 }

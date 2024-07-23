@@ -31,4 +31,6 @@ export type PerfTypeName =
   | "Horde"
   | "King of the Hill"
   | "Racing Kings"
-  | "Three-check";
+  | "Three-check"
+  | "Ultra Bullet"
+  | "Unknown";

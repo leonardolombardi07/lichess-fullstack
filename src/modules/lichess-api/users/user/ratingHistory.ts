@@ -8,12 +8,12 @@ type Day = number; // 1-31
 type Rating = number; // e.g. 1500
 type DateTuple = [Year, ZeroIndexMonth, Day];
 
-type RatingPoint = [...DateTuple, Rating];
-type RatingHistory = RatingPoint[];
+type UserRatingPoint = [...DateTuple, Rating];
+type UserRatingHistory = UserRatingPoint[];
 
 interface UserRatingHistoryEntry {
   name: PerfTypeName;
-  points: RatingHistory;
+  points: UserRatingHistory;
 }
 
 async function getUserRatingHistoryEntries({
@@ -33,4 +33,4 @@ async function getUserRatingHistoryEntries({
 }
 
 export { getUserRatingHistoryEntries };
-export type { UserRatingHistoryEntry };
+export type { UserRatingHistoryEntry, UserRatingPoint, UserRatingHistory };

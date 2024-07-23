@@ -1,6 +1,6 @@
-import { PerfType } from "./types";
+import { PerfType, PerfTypeName } from "./types";
 
-export function humanReadablePerfType(perfType: PerfType) {
+export function humanReadablePerfType(perfType: PerfType): PerfTypeName {
   switch (perfType) {
     case "blitz":
       return "Blitz";
@@ -25,7 +25,7 @@ export function humanReadablePerfType(perfType: PerfType) {
     case "racingKings":
       return "Racing Kings";
     case "threeCheck":
-      return "Three Check";
+      return "Three-check";
     case "correspondence":
       return "Correspondence";
     case "ultraBullet":
